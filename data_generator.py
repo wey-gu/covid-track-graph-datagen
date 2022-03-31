@@ -63,14 +63,10 @@ csv_writer(
     index_prefix="p_")
 
 # ADDRESS
-
 def address_generator():
     """
     (name, street)
     """
-    is_confirmed = random() < CONFIRMED_PROBABILITY
-    confirmed_time = "" if not is_confirmed else faker.date_time_between(
-        start_date=CONFIRMED_START_DATE, end_date='now').timestamp()
     return (
         re.split('市|县', faker.address())[-1],
         f"s_{randint(1, STREET_COUNT)}")
