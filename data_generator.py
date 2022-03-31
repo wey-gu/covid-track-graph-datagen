@@ -56,7 +56,7 @@ def person_generator():
         confirmed_time)
 
 csv_writer(
-    'data/persion.csv',
+    'data/person.csv',
     PERSON_COUNT,
     person_generator,
     index=True,
