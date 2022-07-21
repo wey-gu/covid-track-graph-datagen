@@ -124,7 +124,7 @@ def gen_person(i):
         person_generator,
         index=True,
         index_prefix=f"p_",
-        init_index=i * PERSON_COUNT)
+        init_index=i * (PERSON_COUNT // PROCESS_COUNT))
 
 def gen_addr(i):
     csv_writer(
@@ -133,7 +133,7 @@ def gen_addr(i):
         address_generator,
         index=True,
         index_prefix=f"a_",
-        init_index=i * ADDR_COUNT)
+        init_index=i * (ADDR_COUNT // PROCESS_COUNT))
 
 def gen_person_livewith(i):
     csv_writer(
