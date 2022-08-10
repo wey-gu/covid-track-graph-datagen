@@ -174,4 +174,4 @@ town_id, town_name, district_id
 
 ## Import to Nebula Graph
 
-> With Nebula Importer, TBD
+We could leverage [nebula-importer](https://github.com/vesoft-inc/nebula-importer) to import the dataset into NebulaGraph, the reference configuration file is [here](https://github.com/vesoft-inc/nebula-importer)
