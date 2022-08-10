@@ -16,7 +16,43 @@ Edge:
 - `belong_to(sid, did)`
   - > sid(source ID) could be {address, district, street, town, city} id, did(destination ID) could be {distict, street, town, city, province} id
   
-    
+Schema DDL:
+
+```sql
+-- Create Vertex:
+
+CREATE TAG IF NOT EXISTS 人(name string NOT NULL, is_comfirmaed bool NOT NULL);
+CREATE TAG IF NOT EXISTS 联系方式(num int NOT NULL);
+CREATE TAG IF NOT EXISTS 地址(name string NOT NULL);
+CREATE TAG IF NOT EXISTS 街道(name string NOT NULL);
+CREATE TAG IF NOT EXISTS 村镇(name string NOT NULL);
+CREATE TAG IF NOT EXISTS 行政区(name string NOT NULL);
+CREATE TAG IF NOT EXISTS 城市(name string NOT NULL);
+CREATE TAG IF NOT EXISTS 省份(name string NOT NULL);
+
+-- Create Edge:
+
+CREATE EDGE 同住(start_time float, end_time float);
+CREATE EDGE 到访(start_time float, end_time float);
+CREATE EDGE 属于();
+CREATE EDGE 住址();
+
+-- Create Index: 
+
+CREATE TAG INDEX IF NOT EXISTS person_index_0 on 人(name(10), is_confirmed);
+CREATE TAG INDEX IF NOT EXISTS addr_index_0 on 地址(name(10));
+CREATE TAG INDEX IF NOT EXISTS addr_index_1 on 地址(risk_level(10));
+CREATE TAG INDEX IF NOT EXISTS street_index_0 on 街道(name(10));
+CREATE TAG INDEX IF NOT EXISTS town_index_0 on 村镇(name(10));
+CREATE TAG INDEX IF NOT EXISTS dist_index_0 on 行政区(name(10));
+CREATE TAG INDEX IF NOT EXISTS city_index_0 on 城市(name(10));
+CREATE TAG INDEX IF NOT EXISTS prov_index_0 on 省份(name(10));
+
+CREATE EDGE INDEX IF NOT EXISTS live_index_0 on 同住(start_time);
+CREATE EDGE INDEX IF NOT EXISTS live_index_1 on 同住(end_time);
+CREATE EDGE INDEX IF NOT EXISTS visit_index_0 on 到访(start_time);
+CREATE EDGE INDEX IF NOT EXISTS visit_index_1 on 到访(end_time); 
+```
 
 ## How to Generate Data
 
@@ -136,7 +172,6 @@ town_id, town_name, district_id
 ```
 
 
-
 ## Import to Nebula Graph
 
-> With Nebula Importer, TBD
+We could leverage [nebula-importer](https://github.com/vesoft-inc/nebula-importer) to import the dataset into NebulaGraph, the reference configuration file is [here](https://github.com/vesoft-inc/nebula-importer)
