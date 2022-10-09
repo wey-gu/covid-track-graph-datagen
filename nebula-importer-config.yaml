@@ -10,36 +10,11 @@ clientSettings:
   connection:
     user: root
     password: nebula
-    address: 192.168.8.125:9669
+    address: graphd:9669
   postStart:
     commands: |
-      DROP SPACE IF EXISTS covid_trace;
       CREATE SPACE IF NOT EXISTS covid_trace (partition_num=5, replica_factor=1, vid_type=FIXED_STRING(32));
-      :sleep 5
       USE covid_trace;
-      CREATE TAG IF NOT EXISTS 人(name string NOT NULL, is_comfirmed bool NOT NULL);
-      CREATE TAG IF NOT EXISTS 地址(name string NOT NULL);
-      CREATE TAG IF NOT EXISTS 街道(name string NOT NULL);
-      CREATE TAG IF NOT EXISTS 村镇(name string NOT NULL);
-      CREATE TAG IF NOT EXISTS 行政区(name string NOT NULL);
-      CREATE TAG IF NOT EXISTS 城市(name string NOT NULL);
-      CREATE TAG IF NOT EXISTS 省份(name string NOT NULL);
-      CREATE EDGE IF NOT EXISTS 同住(start_time float, end_time float);
-      CREATE EDGE IF NOT EXISTS 到访(start_time float, end_time float);
-      CREATE EDGE IF NOT EXISTS 属于();
-      CREATE EDGE IF NOT EXISTS 住址();
-      CREATE TAG INDEX IF NOT EXISTS person_index_0 on 人(name(10), is_confirmed);
-      CREATE TAG INDEX IF NOT EXISTS addr_index_0 on 地址(name(10));
-      CREATE TAG INDEX IF NOT EXISTS street_index_0 on 街道(name(10));
-      CREATE TAG INDEX IF NOT EXISTS town_index_0 on 村镇(name(10));
-      CREATE TAG INDEX IF NOT EXISTS dist_index_0 on 行政区(name(10));
-      CREATE TAG INDEX IF NOT EXISTS city_index_0 on 城市(name(10));
-      CREATE TAG INDEX IF NOT EXISTS prov_index_0 on 省份(name(10));
-      CREATE EDGE INDEX IF NOT EXISTS live_index_0 on 同住(start_time);
-      CREATE EDGE INDEX IF NOT EXISTS live_index_1 on 同住(end_time);
-      CREATE EDGE INDEX IF NOT EXISTS visit_index_0 on 到访(start_time);
-      CREATE EDGE INDEX IF NOT EXISTS visit_index_1 on 到访(end_time);
-      :sleep 5
     afterPeriod: 8s
 logPath: ./err/covid-trace.log
 files:
@@ -63,7 +38,7 @@ files:
                 type: string
                 index: 1
 
-- path: ./data/city.csv
+  - path: ./data/city.csv
     failDataPath: ./err/city.csv
     batchSize: 200
     inOrder: false
@@ -184,7 +159,7 @@ files:
                 type: string
                 index: 1
 
-- path: ./data/person_livewith.csv
+  - path: ./data/person_livewith.csv
     failDataPath: ./err/person_livewith.csv
     batchSize: 2
     inOrder: false
