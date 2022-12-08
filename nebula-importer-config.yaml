@@ -14,13 +14,27 @@ clientSettings:
   postStart:
     commands: |
       CREATE SPACE IF NOT EXISTS covid_trace (partition_num=5, replica_factor=1, vid_type=FIXED_STRING(32));
+
+      CREATE TAG IF NOT EXISTS 人(name string NOT NULL, is_confirmed bool NOT NULL);
+      CREATE TAG IF NOT EXISTS 联系方式(num int NOT NULL);
+      CREATE TAG IF NOT EXISTS 地址(name string NOT NULL);
+      CREATE TAG IF NOT EXISTS 街道(name string NOT NULL);
+      CREATE TAG IF NOT EXISTS 村镇(name string NOT NULL);
+      CREATE TAG IF NOT EXISTS 行政区(name string NOT NULL);
+      CREATE TAG IF NOT EXISTS 城市(name string NOT NULL);
+      CREATE TAG IF NOT EXISTS 省份(name string NOT NULL);
+
+      CREATE EDGE 同住(start_time float, end_time float);
+      CREATE EDGE 到访(start_time float, end_time float);
+      CREATE EDGE 属于();
+      CREATE EDGE 住址();
       USE covid_trace;
     afterPeriod: 8s
 logPath: ./err/covid-trace.log
 files:
   - path: ./data/address.csv
     failDataPath: ./err/address.csv
-    batchSize: 200
+    batchSize: 2000
     inOrder: false
     type: csv
     csv:
@@ -40,7 +54,7 @@ files:
 
   - path: ./data/city.csv
     failDataPath: ./err/city.csv
-    batchSize: 200
+    batchSize: 2000
     inOrder: false
     type: csv
     csv:
@@ -60,7 +74,7 @@ files:
 
   - path: ./data/person.csv
     failDataPath: ./err/person.csv
-    batchSize: 200
+    batchSize: 2000
     inOrder: false
     type: csv
     csv:
@@ -83,7 +97,7 @@ files:
 
   - path: ./data/district.csv
     failDataPath: ./err/district.csv
-    batchSize: 200
+    batchSize: 2000
     inOrder: false
     type: csv
     csv:
@@ -103,7 +117,7 @@ files:
 
   - path: ./data/street.csv
     failDataPath: ./err/street.csv
-    batchSize: 200
+    batchSize: 2000
     inOrder: false
     type: csv
     csv:
@@ -123,7 +137,7 @@ files:
 
   - path: ./data/town.csv
     failDataPath: ./err/town.csv
-    batchSize: 200
+    batchSize: 2000
     inOrder: false
     type: csv
     csv:
@@ -142,7 +156,7 @@ files:
                 index: 1
   - path: ./data/province.csv
     failDataPath: ./err/province.csv
-    batchSize: 200
+    batchSize: 2000
     inOrder: false
     type: csv
     csv:
@@ -162,7 +176,7 @@ files:
 
   - path: ./data/person_livewith.csv
     failDataPath: ./err/person_livewith.csv
-    batchSize: 2
+    batchSize: 2000
     inOrder: false
     type: csv
     csv:
@@ -188,7 +202,7 @@ files:
 
   - path: ./data/person_visit.csv
     failDataPath: ./err/person_visit.csv
-    batchSize: 2
+    batchSize: 2000
     inOrder: false
     type: csv
     csv:
@@ -212,7 +226,7 @@ files:
             index: 3
   - path: ./data/address.csv
     failDataPath: ./err/belong_to.csv
-    batchSize: 2
+    batchSize: 2000
     inOrder: false
     type: csv
     csv:
@@ -230,7 +244,7 @@ files:
 
   - path: ./data/street.csv
     failDataPath: ./err/belong_to.csv
-    batchSize: 2
+    batchSize: 2000
     inOrder: false
     type: csv
     csv:
@@ -248,7 +262,7 @@ files:
 
   - path: ./data/town.csv
     failDataPath: ./err/belong_to.csv
-    batchSize: 2
+    batchSize: 2000
     inOrder: false
     type: csv
     csv:
@@ -266,7 +280,7 @@ files:
 
   - path: ./data/district.csv
     failDataPath: ./err/belong_to.csv
-    batchSize: 2
+    batchSize: 2000
     inOrder: false
     type: csv
     csv:
@@ -283,7 +297,7 @@ files:
           index: 2
   - path: ./data/city.csv
     failDataPath: ./err/belong_to.csv
-    batchSize: 2
+    batchSize: 2000
     inOrder: false
     type: csv
     csv:
